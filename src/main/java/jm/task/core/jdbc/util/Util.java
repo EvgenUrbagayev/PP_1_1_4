@@ -7,7 +7,7 @@ import java.sql.SQLException;
 
 public class Util {
     private static final String DB_DRIVER = "com.mysql.cj.jdbc.Driver";
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/database_1.3.3";
+    private static final String DB_URL = "jdbc:mysql://localhost:3306/database_1.1.3";
     private static final String DB_USERNAME = "root";
     private static final String DB_PASSWORD = "Ruslan13072011";
 
@@ -18,7 +18,7 @@ public class Util {
             connection = DriverManager.getConnection(DB_URL, DB_USERNAME,DB_PASSWORD);
             System.out.println("Connection OK");
         } catch (ClassNotFoundException | SQLException e) {
-            System.out.println("Connection ERROR");
+            System.out.println("ERROR");
         }
         return connection;
     }
