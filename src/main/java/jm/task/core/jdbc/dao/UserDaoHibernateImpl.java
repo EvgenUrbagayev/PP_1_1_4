@@ -20,20 +20,24 @@ public class UserDaoHibernateImpl implements UserDao {
 
     @Override
     public void createUsersTable() {
-        Session session = sessionFactory.openSession();
-        session.beginTransaction();
-        session.createNativeQuery("CREATE TABLE IF NOT EXISTS users (id INT PRIMARY KEY AUTO_INCREMENT," +
-                " name VARCHAR(40) NOT NULL, lastName VARCHAR(100) NOT NULL, age TINYINT NOT NULL)").executeUpdate();
-        session.getTransaction().commit();
-
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            session.createNativeQuery("CREATE TABLE IF NOT EXISTS users (id INT PRIMARY KEY AUTO_INCREMENT," +
+                    " name VARCHAR(40) NOT NULL, lastName VARCHAR(100) NOT NULL, age TINYINT NOT NULL)").executeUpdate();
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void dropUsersTable() {
-        Session session = sessionFactory.openSession();
-        session.beginTransaction();
-        session.createNativeQuery("DROP TABLE IF EXISTS users").executeUpdate();
-
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            session.createNativeQuery("DROP TABLE IF EXISTS users").executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -57,7 +61,6 @@ public class UserDaoHibernateImpl implements UserDao {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     @Override
@@ -69,12 +72,14 @@ public class UserDaoHibernateImpl implements UserDao {
 
     @Override
     public void cleanUsersTable() {
-        Session session = Util.getSessionFactory().openSession();
-        Transaction tx1 = session.beginTransaction();
-        String sql = "Truncate table Users";
-        session.createSQLQuery(sql).executeUpdate();
-        tx1.commit();
-        session.close();
-
+        try (Session session = Util.getSessionFactory().openSession()) {
+            Transaction tx1 = session.beginTransaction();
+            String hql = "DELETE FROM users";
+            session.createSQLQuery(hql).executeUpdate();
+            tx1.commit();
+            session.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
